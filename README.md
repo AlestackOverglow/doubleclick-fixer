@@ -4,6 +4,8 @@ A program to fix the problem of double clicks when the mouse is worn out.
 Works in the background and blocks unwanted repeated clicks that occur due to mechanical wear of the left mouse button.
 Takes up minimal space and uses minimal resources (like zero)
 
+**Note: If it doesn't work, just adjust the threshold in the settings, because different mice require different ones.**
+
 ## Features
 
 - Block unwanted double clicks
