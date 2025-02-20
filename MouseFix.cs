@@ -63,7 +63,7 @@ public class MouseFix
         }
         catch
         {
-            // В случае ошибки используем значение по умолчанию
+            // Use default threshold if there is an error
             _threshold = 30;
         }
     }
@@ -81,7 +81,7 @@ public class MouseFix
         }
         catch
         {
-            // Игнорируем ошибки сохранения
+            // Just ignore errors lol
         }
     }
 
@@ -163,7 +163,7 @@ public class MouseFix
         trayIcon.ContextMenuStrip = contextMenu;
         trayIcon.Visible = true;
 
-        // Добавляем обработчик двойного клика по иконке
+        
         trayIcon.DoubleClick += (s, e) => ShowSettingsForm();
     }
 
