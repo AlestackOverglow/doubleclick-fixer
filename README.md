@@ -1,74 +1,88 @@
 # Mouse Double Click Fixer
 
-Программа для исправления проблемы двойного клика при износе мыши. Работает в фоновом режиме и блокирует нежелательные повторные клики, возникающие из-за механического износа кнопки мыши.
+A program to fix the problem of double clicks when the mouse is worn out. 
+Works in the background and blocks unwanted repeated clicks that occur due to mechanical wear of the left mouse button.
+Takes up minimal space and uses minimal resources (like zero)
 
-## Возможности
+## Features
 
-- Блокировка нежелательных двойных кликов
-- Настраиваемый порог времени между кликами
-- Работа в фоновом режиме через системный трей
-- Автоматическое сохранение настроек
-- Запуск вместе с Windows (требуется добавить вручную)
+- Block unwanted double clicks
+- Configurable time threshold between clicks
+- Work in the background via the system tray
+- Automatically save settings
+- Start with Windows (must be added manually)
 
-## Системные требования
+## System requirements
 
 - Windows 7/8/10/11
-- .NET Framework 4.8 или выше
-- Права администратора не требуются
+- .NET Framework 4.8 or higher
+- No administrator rights required
 
-## Установка
+## Installation
 
-1. Скачайте последнюю версию программы
-2. Распакуйте файлы в удобное место
-3. Запустите `MouseFix.exe`
+1. Download the latest version of the program
+2. Unzip the files to a convenient location
+3. Run `MouseFix.exe`
+4. (Optional) Double-click on the tray icon or right-click  → Settings, set the filter threshold that will help your mouse
 
-## Использование
+## Usage
 
-### Первый запуск
-- При запуске программа автоматически сворачивается в системный трей
-- В трее появится иконка программы
-- Программа сразу начинает работать с настройками по умолчанию (порог 30мс)
+### First launch
+- When launched, the program is automatically minimized to the system tray
+- The program icon will appear in the tray
+- The program immediately starts working with default settings (threshold 30ms)
 
-### Настройка
-1. Откройте настройки одним из способов:
-   - Двойной клик по иконке в трее
-   - Правый клик по иконке → Settings
-2. Установите желаемый порог времени между кликами:
-   - Меньше значение = более агрессивная фильтрация кликов
-   - Больше значение = более мягкая фильтрация
-   - Рекомендуемый диапазон: 20-50мс
-3. Нажмите "Apply" для сохранения настроек
+### Setting
+1. Open the settings in one of the following ways:
+   - Double-click on the tray icon
+   - Right-click on the icon → Settings
+2. Set the desired time threshold between clicks:
+   - Lower value = more aggressive click filtering
+   - Higher value = softer filtering
+   - Recommended range: 20-50ms
+3. Click "Apply" to save the settings
 
-### Управление программой
-- **Открытие настроек**: двойной клик по иконке в трее
-- **Выход из программы**: правый клик по иконке → Exit
-- **Настройки сохраняются** автоматически при:
-  - Нажатии кнопки Apply в настройках
-  - Закрытии программы
+### Program management
+- **Opening settings**: double-click on the tray icon
+- **Exiting the program**: right-click on the icon → Exit
+- **Settings are saved** automatically when:
+- Clicking the Apply button in the settings
+- Closing the program
+  
+### Autostart
+To add to Windows startup:
+1. Create a shortcut `MouseFix.exe`
+2. Press Win + R, enter `shell:startup`
+3. Copy the shortcut to the folder that opens
 
-### Автозапуск
-Для добавления в автозапуск Windows:
-1. Создайте ярлык `MouseFix.exe`
-2. Нажмите Win + R, введите `shell:startup`
-3. Скопируйте ярлык в открывшуюся папку
+## Troubleshooting
 
-## Устранение неполадок
+### The program does not block unwanted clicks
+- Reduce the time threshold in the settings
+- Try values ​​in the range of 20-30ms
 
-### Программа не блокирует нежелательные клики
-- Уменьшите порог времени в настройках
-- Попробуйте значения в диапазоне 20-30мс
+### The program blocks normal clicks
+- Increase the time threshold in the settings
+- Try values ​​in the range of 40-50ms
 
-### Программа блокирует нормальные клики
-- Увеличьте порог времени в настройках
-- Попробуйте значения в диапазоне 40-50мс
+### The program does not start
+- Make sure that .NET Framework 4.8 is installed
+- Check for write access to the program folder
+- 
+## Build from source 
+   - Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli)
+   - Open command line in project folder or
+     ```bash
+      cd your/project/folder
+     ```
+   - Type:
+     ```bash
+      dotnet build
+      ```
+     
+## Technical details
 
-### Программа не запускается
-- Убедитесь, что установлен .NET Framework 4.8
-- Проверьте наличие прав на запись в папку с программой
-
-## Технические детали
-
-- Программа использует низкоуровневый хук мыши для перехвата событий
-- Настройки сохраняются в файл `mousefix_config.xml`
-- Минимальный порог: 10мс
-- Максимальный порог: 200мс 
+- The program uses a low-level mouse hook to intercept events
+- Settings are saved in the file `mousefix_config.xml`
+- Minimum threshold: 10ms
+- Maximum threshold: 200ms
