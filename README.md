@@ -69,7 +69,7 @@ To add to Windows startup:
 
 ### The program does not block unwanted clicks
 - Increase the time threshold in the settings
-- Try values ​​in the range of 40-50ms
+- Try values ​​in the range of 40-100ms
 
 ### The program blocks normal clicks
 - Reduce the time threshold in the settings
