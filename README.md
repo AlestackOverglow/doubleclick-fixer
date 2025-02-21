@@ -45,12 +45,12 @@ Takes up minimal space and uses minimal resources (like zero)
 3. Click "Apply" to save the settings
 
 ## Build from source 
-   - Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli)
-     ```bash
-      git clone https://github.com/AlestackOverglow/doubleclick-fixer.git
-      cd doubleclick-fixer
-      dotnet build
-     ```
+   1. Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli) 
+   2.  ```bash
+       git clone https://github.com/AlestackOverglow/doubleclick-fixer.git
+       cd doubleclick-fixer
+       dotnet build
+       ```
      
 ### Program management
 - **Opening settings**: double-click on the tray icon
