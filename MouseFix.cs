@@ -29,6 +29,7 @@ public class MouseFix
     public class Config
     {
         public int Threshold { get; set; }
+        public bool AutoStart { get; set; }
     }
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
@@ -63,6 +64,43 @@ public class MouseFix
         };
     }
 
+    private static bool GetAutoStartEnabled()
+    {
+        try
+        {
+            using (var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", false))
+            {
+                return key?.GetValue("MouseFix") != null;
+            }
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static void SetAutoStart(bool enable)
+    {
+        try
+        {
+            using (var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true))
+            {
+                if (enable)
+                {
+                    key?.SetValue("MouseFix", Application.ExecutablePath);
+                }
+                else
+                {
+                    key?.DeleteValue("MouseFix", false);
+                }
+            }
+        }
+        catch
+        {
+            // Ignore registry access errors
+        }
+    }
+
     private static void LoadConfig()
     {
         try
@@ -74,6 +112,7 @@ public class MouseFix
                 {
                     var config = (Config)serializer.Deserialize(reader);
                     _threshold = config.Threshold;
+                    SetAutoStart(config.AutoStart);
                 }
             }
         }
@@ -87,7 +126,11 @@ public class MouseFix
     {
         try
         {
-            var config = new Config { Threshold = _threshold };
+            var config = new Config 
+            { 
+                Threshold = _threshold,
+                AutoStart = GetAutoStartEnabled()
+            };
             var serializer = new XmlSerializer(typeof(Config));
             using (var writer = new StreamWriter(CONFIG_FILE))
             {
@@ -96,7 +139,7 @@ public class MouseFix
         }
         catch
         {
-            // Just ignore errors lol
+            // Just ignore errors
         }
     }
 
@@ -105,7 +148,7 @@ public class MouseFix
         using (var settingsForm = new Form())
         {
             settingsForm.Text = "Mouse Fix Settings";
-            settingsForm.Size = new System.Drawing.Size(280, 120);
+            settingsForm.Size = new System.Drawing.Size(280, 150);
             settingsForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             settingsForm.MaximizeBox = false;
             settingsForm.MinimizeBox = false;
@@ -127,10 +170,18 @@ public class MouseFix
                 Width = 80
             };
 
+            var autoStartCheckbox = new CheckBox
+            {
+                Text = "Run at Windows startup",
+                Location = new System.Drawing.Point(20, 45),
+                AutoSize = true,
+                Checked = GetAutoStartEnabled()
+            };
+
             var applyButton = new Button
             {
                 Text = "Apply",
-                Location = new System.Drawing.Point(100, 40),
+                Location = new System.Drawing.Point(100, 70),
                 Size = new System.Drawing.Size(80, 25),
                 DialogResult = DialogResult.OK
             };
@@ -138,7 +189,7 @@ public class MouseFix
             var authorLabel = new Label
             {
                 Text = "Author: AlestackOverglow",
-                Location = new System.Drawing.Point(20, 70),
+                Location = new System.Drawing.Point(20, 100),
                 AutoSize = true,
                 ForeColor = System.Drawing.Color.Blue,
                 Cursor = Cursors.Hand
@@ -147,6 +198,7 @@ public class MouseFix
             applyButton.Click += (s, e) =>
             {
                 _threshold = (int)thresholdInput.Value;
+                SetAutoStart(autoStartCheckbox.Checked);
                 SaveConfig();
                 settingsForm.Close();
             };
@@ -160,7 +212,13 @@ public class MouseFix
                 });
             };
 
-            settingsForm.Controls.AddRange(new Control[] { label, thresholdInput, applyButton, authorLabel });
+            settingsForm.Controls.AddRange(new Control[] { 
+                label, 
+                thresholdInput, 
+                autoStartCheckbox,
+                applyButton, 
+                authorLabel 
+            });
             settingsForm.ShowDialog();
         }
     }
@@ -170,12 +228,11 @@ public class MouseFix
         trayIcon = new NotifyIcon();
         try 
         {
-            // Загружаем иконку из файла приложения
             trayIcon.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         }
         catch 
         {
-            trayIcon.Icon = SystemIcons.Application; // Fallback to system icon if failed
+            trayIcon.Icon = SystemIcons.Application;
         }
         trayIcon.Text = "Mouse Double Click Fixer";
         
@@ -183,6 +240,15 @@ public class MouseFix
         
         var settingsItem = new ToolStripMenuItem("Settings");
         settingsItem.Click += (s, e) => ShowSettingsForm();
+        
+        var autoStartItem = new ToolStripMenuItem("Run at startup");
+        autoStartItem.Checked = GetAutoStartEnabled();
+        autoStartItem.Click += (s, e) =>
+        {
+            autoStartItem.Checked = !autoStartItem.Checked;
+            SetAutoStart(autoStartItem.Checked);
+            SaveConfig();
+        };
         
         var separator = new ToolStripSeparator();
         
@@ -197,14 +263,14 @@ public class MouseFix
         };
         
         contextMenu.Items.AddRange(new ToolStripItem[] { 
-            settingsItem, 
+            settingsItem,
+            autoStartItem,
             separator,
             exitItem 
         });
         
         trayIcon.ContextMenuStrip = contextMenu;
         trayIcon.Visible = true;
-
         
         trayIcon.DoubleClick += (s, e) => ShowSettingsForm();
     }
