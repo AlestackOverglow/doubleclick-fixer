@@ -73,7 +73,7 @@ To add to Windows startup:
 
 ### The program blocks normal clicks
 - Reduce the time threshold in the settings
-- Try values ​​in the range of 20-30ms
+- Try values ​​in the range of 20-80ms
 
 ### The program does not start
 - Make sure that .NET Framework 4.8 is installed
