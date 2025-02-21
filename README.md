@@ -13,7 +13,7 @@ Works in the background and blocks unwanted repeated clicks. Takes up minimal sp
 - Configurable time threshold between clicks
 - Work in the background via the system tray
 - Automatically save settings
-- Start with Windows (must be added manually)
+- Start with Windows (disabled by default)
 
 ## System requirements
 
@@ -23,18 +23,18 @@ Works in the background and blocks unwanted repeated clicks. Takes up minimal sp
 
 ## Installation
 
-1. Download the latest version from [Releases](https://github.com/AlestackOverglow/doubleclick-fixer/releases) 
-2. Run `MouseFix.exe`
-3. (Optional) Double-click on the tray icon or right-click  → Settings, set the filter threshold that will help your mouse
+1. Download the latest version from [Releases](https://github.com/AlestackOverglow/doubleclick-fixer/releases)
+2. Make sure you have .NET Framework installed
+3. Run `MouseFix.exe`
+4. (Optional) Double-click on the tray icon or right-click  → Settings, set the filter threshold that will help your mouse
 
-### Build from source 
+## Build from source 
    1. Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli) 
    2.  ```bash
        git clone https://github.com/AlestackOverglow/doubleclick-fixer.git
        cd doubleclick-fixer
        dotnet build
        ```
-
 ## Usage
 
 ### First launch
@@ -50,9 +50,9 @@ Works in the background and blocks unwanted repeated clicks. Takes up minimal sp
    - Lower value = softer filtering
    - Higher value = more aggressive click filtering
    - Recommended range: 20-100ms
+3. To add to Windows startup:
+   -  Right-click on the icon → Run at startup or enable in settings as above
 3. Click "Apply" to save the settings
-
-
      
 ### Program management
 - **Opening settings**: double-click on the tray icon
@@ -61,12 +61,6 @@ Works in the background and blocks unwanted repeated clicks. Takes up minimal sp
    - Clicking the Apply button in the settings
    - Closing the program
   
-### Autostart
-To add to Windows startup:
-1. Create a shortcut `MouseFix.exe`
-2. Press Win + R, enter `shell:startup`
-3. Copy the shortcut to the folder that opens
-
 ## Troubleshooting
 
 ### The program does not block unwanted clicks
@@ -81,8 +75,6 @@ To add to Windows startup:
 - Make sure that .NET Framework 4.8 is installed
 - Check for write access to the program folder
 
-
-     
 ## Technical details
 
 - The program uses a low-level mouse hook to intercept events
