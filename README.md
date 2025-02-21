@@ -1,8 +1,8 @@
 # Mouse Double Click Fixer
 
-A program to fix the problem of double clicks when the mouse is worn out. 
-Works in the background and blocks unwanted repeated clicks that occur due to mechanical wear of the left mouse button.
-Takes up minimal space and uses minimal resources (like zero)
+A program to fix the problem of double clicks that occur due to mechanical wear of the left mouse button.
+
+Works in the background and blocks unwanted repeated clicks. Takes up minimal space and uses minimal resources (like zero), no admin rights required .
 
 **Note: If it doesn't work, just adjust the threshold in the settings, because different mice require different ones.**
 
@@ -27,6 +27,14 @@ Takes up minimal space and uses minimal resources (like zero)
 3. Run `MouseFix.exe`
 4. (Optional) Double-click on the tray icon or right-click  → Settings, set the filter threshold that will help your mouse
 
+### Build from source 
+   1. Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli) 
+   2.  ```bash
+       git clone https://github.com/AlestackOverglow/doubleclick-fixer.git
+       cd doubleclick-fixer
+       dotnet build
+       ```
+
 ## Usage
 
 ### First launch
@@ -43,14 +51,7 @@ Takes up minimal space and uses minimal resources (like zero)
    - Higher value = more aggressive click filtering
    - Recommended range: 20-100ms
 3. Click "Apply" to save the settings
-
-## Build from source 
-   1. Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli) 
-   2.  ```bash
-       git clone https://github.com/AlestackOverglow/doubleclick-fixer.git
-       cd doubleclick-fixer
-       dotnet build
-       ```
+
      
 ### Program management
 - **Opening settings**: double-click on the tray icon
