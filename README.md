@@ -44,6 +44,14 @@ Takes up minimal space and uses minimal resources (like zero)
    - Recommended range: 20-50ms
 3. Click "Apply" to save the settings
 
+## Build from source 
+   - Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli)
+     ```bash
+      git clonehttps://github.com/AlestackOverglow/doubleclick-fixer.git
+      cd doubleclick-fixer
+      dotnet build
+     ```
+     
 ### Program management
 - **Opening settings**: double-click on the tray icon
 - **Exiting the program**: right-click on the icon → Exit
@@ -71,13 +79,7 @@ To add to Windows startup:
 - Make sure that .NET Framework 4.8 is installed
 - Check for write access to the program folder
 
-## Build from source 
-   - Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli)
-     ```bash
-      git clonehttps://github.com/AlestackOverglow/doubleclick-fixer.git
-      cd doubleclick-fixer
-      dotnet build
-     ```
+
      
 ## Technical details
 
