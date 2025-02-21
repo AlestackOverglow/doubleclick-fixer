@@ -23,10 +23,9 @@ Works in the background and blocks unwanted repeated clicks. Takes up minimal sp
 
 ## Installation
 
-1. Download the latest version of the program
-2. Unzip the files to a convenient location
-3. Run `MouseFix.exe`
-4. (Optional) Double-click on the tray icon or right-click  → Settings, set the filter threshold that will help your mouse
+1. Download the latest version from [Releases](https://github.com/AlestackOverglow/doubleclick-fixer/releases) 
+2. Run `MouseFix.exe`
+3. (Optional) Double-click on the tray icon or right-click  → Settings, set the filter threshold that will help your mouse
 
 ### Build from source 
    1. Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli) 
