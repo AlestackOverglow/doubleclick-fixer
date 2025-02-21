@@ -18,6 +18,8 @@ public class MouseFix
     private static int _threshold = 50;
     private static NotifyIcon trayIcon;
     private static bool _isBlocking = false;
+    private static int _clickCount = 0;
+    private static Timer _clickResetTimer;
 
     [Serializable]
     public class Config
@@ -45,6 +47,15 @@ public class MouseFix
         LoadConfig();
         InitializeTrayIcon();
         _hookID = SetHook(_proc);
+        
+        // Initialize the timer
+        _clickResetTimer = new Timer();
+        _clickResetTimer.Interval = 200; // Reset interval in milliseconds
+        _clickResetTimer.Tick += (s, e) => 
+        {
+            _clickCount = 0; // Reset click count
+            _clickResetTimer.Stop(); // Stop the timer
+        };
     }
 
     private static void LoadConfig()
@@ -188,11 +199,20 @@ public class MouseFix
 
                 if (timeDiff < _threshold)
                 {
-                    _isBlocking = true;
-                    return (IntPtr)1;
+                    _clickCount++;
+                    if (_clickCount > 1)
+                    {
+                        _isBlocking = true;
+                        return (IntPtr)1;
+                    }
+                }
+                else
+                {
+                    _clickCount = 1; // Reset count if time exceeds threshold
                 }
 
                 _lastClickTime = currentTime;
+                _clickResetTimer.Start(); // Start or reset the timer
                 _isBlocking = false;
             }
             else if (wParam == (IntPtr)WM_LBUTTONUP && _isBlocking)
