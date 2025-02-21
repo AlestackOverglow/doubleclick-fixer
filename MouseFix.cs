@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
+using System.Drawing;
 
 public class MouseFix
 {
@@ -15,7 +16,7 @@ public class MouseFix
     private static LowLevelMouseProc _proc = HookCallback;
     private static IntPtr _hookID = IntPtr.Zero;
     private static long _lastClickTime = 0;
-    private static int _threshold = 50;
+    private static int _threshold = 70;
     private static NotifyIcon trayIcon;
     private static bool _isBlocking = false;
     private static int _clickCount = 0;
@@ -75,7 +76,7 @@ public class MouseFix
         catch
         {
             // Use default threshold if there is an error
-            _threshold = 50;
+            _threshold = 70;
         }
     }
 
@@ -101,7 +102,7 @@ public class MouseFix
         using (var settingsForm = new Form())
         {
             settingsForm.Text = "Mouse Fix Settings";
-            settingsForm.Size = new System.Drawing.Size(300, 150);
+            settingsForm.Size = new System.Drawing.Size(280, 120);
             settingsForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             settingsForm.MaximizeBox = false;
             settingsForm.MinimizeBox = false;
@@ -110,24 +111,34 @@ public class MouseFix
             var label = new Label
             {
                 Text = "Threshold (ms):",
-                Location = new System.Drawing.Point(20, 20),
+                Location = new System.Drawing.Point(20, 17),
                 AutoSize = true
             };
 
             var thresholdInput = new NumericUpDown
             {
-                Location = new System.Drawing.Point(120, 18),
+                Location = new System.Drawing.Point(100, 15),
                 Minimum = 10,
                 Maximum = 300,
                 Value = _threshold,
-                Width = 60
+                Width = 80
             };
 
             var applyButton = new Button
             {
                 Text = "Apply",
-                Location = new System.Drawing.Point(100, 60),
+                Location = new System.Drawing.Point(100, 40),
+                Size = new System.Drawing.Size(80, 25),
                 DialogResult = DialogResult.OK
+            };
+
+            var authorLabel = new Label
+            {
+                Text = "Author: AlestackOverglow",
+                Location = new System.Drawing.Point(20, 70),
+                AutoSize = true,
+                ForeColor = System.Drawing.Color.Blue,
+                Cursor = Cursors.Hand
             };
 
             applyButton.Click += (s, e) =>
@@ -137,7 +148,16 @@ public class MouseFix
                 settingsForm.Close();
             };
 
-            settingsForm.Controls.AddRange(new Control[] { label, thresholdInput, applyButton });
+            authorLabel.Click += (s, e) =>
+            {
+                System.Diagnostics.Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://alestackoverglow.github.io/",
+                    UseShellExecute = true
+                });
+            };
+
+            settingsForm.Controls.AddRange(new Control[] { label, thresholdInput, applyButton, authorLabel });
             settingsForm.ShowDialog();
         }
     }
@@ -145,7 +165,7 @@ public class MouseFix
     private static void InitializeTrayIcon()
     {
         trayIcon = new NotifyIcon();
-        trayIcon.Icon = System.Drawing.SystemIcons.Application;
+        trayIcon.Icon = SystemIcons.Application;
         trayIcon.Text = "Mouse Double Click Fixer";
         
         var contextMenu = new ContextMenuStrip();
