@@ -39,9 +39,9 @@ Takes up minimal space and uses minimal resources (like zero)
    - Double-click on the tray icon
    - Right-click on the icon → Settings
 2. Set the desired time threshold between clicks:
-   - Lower value = more aggressive click filtering
-   - Higher value = softer filtering
-   - Recommended range: 20-50ms
+   - Lower value = softer filtering
+   - Higher value = more aggressive click filtering
+   - Recommended range: 20-100ms
 3. Click "Apply" to save the settings
 
 ## Build from source 
@@ -56,8 +56,8 @@ Takes up minimal space and uses minimal resources (like zero)
 - **Opening settings**: double-click on the tray icon
 - **Exiting the program**: right-click on the icon → Exit
 - **Settings are saved** automatically when:
-- Clicking the Apply button in the settings
-- Closing the program
+   - Clicking the Apply button in the settings
+   - Closing the program
   
 ### Autostart
 To add to Windows startup:
@@ -68,12 +68,12 @@ To add to Windows startup:
 ## Troubleshooting
 
 ### The program does not block unwanted clicks
-- Reduce the time threshold in the settings
-- Try values ​​in the range of 20-30ms
-
-### The program blocks normal clicks
 - Increase the time threshold in the settings
 - Try values ​​in the range of 40-50ms
+
+### The program blocks normal clicks
+- Reduce the time threshold in the settings
+- Try values ​​in the range of 20-30ms
 
 ### The program does not start
 - Make sure that .NET Framework 4.8 is installed
