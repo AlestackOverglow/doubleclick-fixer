@@ -47,7 +47,7 @@ Takes up minimal space and uses minimal resources (like zero)
 ## Build from source 
    - Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli)
      ```bash
-      git clonehttps://github.com/AlestackOverglow/doubleclick-fixer.git
+      git clone https://github.com/AlestackOverglow/doubleclick-fixer.git
       cd doubleclick-fixer
       dotnet build
      ```
