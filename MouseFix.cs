@@ -12,11 +12,14 @@ public class MouseFix
     private const int WM_LBUTTONDOWN = 0x0201;
     private const int WM_LBUTTONUP = 0x0202;
     private const string CONFIG_FILE = "mousefix_config.xml";
+    private const int DEFAULT_THRESHOLD = 30; // Default threshold in milliseconds
+    private const int DEBOUNCE_TIME = 10; // Minimum time between clicks in milliseconds
+    private const int RESET_TIMER_INTERVAL = 100; // Reset timer interval in milliseconds
     
     private static LowLevelMouseProc _proc = HookCallback;
     private static IntPtr _hookID = IntPtr.Zero;
     private static long _lastClickTime = 0;
-    private static int _threshold = 70;
+    private static int _threshold = DEFAULT_THRESHOLD;
     private static NotifyIcon trayIcon;
     private static bool _isBlocking = false;
     private static int _clickCount = 0;
@@ -51,11 +54,12 @@ public class MouseFix
         
         // Initialize the timer
         _clickResetTimer = new Timer();
-        _clickResetTimer.Interval = 200; // Reset interval in milliseconds
+        _clickResetTimer.Interval = RESET_TIMER_INTERVAL;
         _clickResetTimer.Tick += (s, e) => 
         {
-            _clickCount = 0; // Reset click count
-            _clickResetTimer.Stop(); // Stop the timer
+            _clickCount = 0;
+            _isBlocking = false;
+            _clickResetTimer.Stop();
         };
     }
 
@@ -75,8 +79,7 @@ public class MouseFix
         }
         catch
         {
-            // Use default threshold if there is an error
-            _threshold = 70;
+            _threshold = DEFAULT_THRESHOLD;
         }
     }
 
@@ -165,7 +168,15 @@ public class MouseFix
     private static void InitializeTrayIcon()
     {
         trayIcon = new NotifyIcon();
-        trayIcon.Icon = SystemIcons.Application;
+        try 
+        {
+            // Загружаем иконку из файла приложения
+            trayIcon.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+        }
+        catch 
+        {
+            trayIcon.Icon = SystemIcons.Application; // Fallback to system icon if failed
+        }
         trayIcon.Text = "Mouse Double Click Fixer";
         
         var contextMenu = new ContextMenuStrip();
@@ -217,6 +228,12 @@ public class MouseFix
                 long currentTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                 long timeDiff = currentTime - _lastClickTime;
 
+                // Ignore clicks that are too close together (debouncing)
+                if (timeDiff < DEBOUNCE_TIME)
+                {
+                    return (IntPtr)1;
+                }
+
                 if (timeDiff < _threshold)
                 {
                     _clickCount++;
@@ -228,16 +245,22 @@ public class MouseFix
                 }
                 else
                 {
-                    _clickCount = 1; // Reset count if time exceeds threshold
+                    _clickCount = 1;
                 }
 
                 _lastClickTime = currentTime;
-                _clickResetTimer.Start(); // Start or reset the timer
-                _isBlocking = false;
+                if (_clickResetTimer != null)
+                {
+                    _clickResetTimer.Start();
+                }
             }
-            else if (wParam == (IntPtr)WM_LBUTTONUP && _isBlocking)
+            else if (wParam == (IntPtr)WM_LBUTTONUP)
             {
-                return (IntPtr)1;
+                if (_isBlocking)
+                {
+                    _isBlocking = false;
+                    return (IntPtr)1;
+                }
             }
         }
 
