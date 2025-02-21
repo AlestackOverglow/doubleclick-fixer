@@ -15,7 +15,7 @@ public class MouseFix
     private static LowLevelMouseProc _proc = HookCallback;
     private static IntPtr _hookID = IntPtr.Zero;
     private static long _lastClickTime = 0;
-    private static int _threshold = 30;
+    private static int _threshold = 50;
     private static NotifyIcon trayIcon;
     private static bool _isBlocking = false;
 
@@ -64,7 +64,7 @@ public class MouseFix
         catch
         {
             // Use default threshold if there is an error
-            _threshold = 30;
+            _threshold = 50;
         }
     }
 
@@ -107,7 +107,7 @@ public class MouseFix
             {
                 Location = new System.Drawing.Point(120, 18),
                 Minimum = 10,
-                Maximum = 200,
+                Maximum = 300,
                 Value = _threshold,
                 Width = 60
             };
