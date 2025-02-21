@@ -70,17 +70,14 @@ To add to Windows startup:
 ### The program does not start
 - Make sure that .NET Framework 4.8 is installed
 - Check for write access to the program folder
-- 
+
 ## Build from source 
    - Install [.Net SDK](https://dotnet.microsoft.com/download/dotnet?cid=getdotnetcorecli)
-   - Open command line in project folder or
      ```bash
-      cd your/project/folder
-     ```
-   - Type:
-     ```bash
+      git clonehttps://github.com/AlestackOverglow/doubleclick-fixer.git
+      cd doubleclick-fixer
       dotnet build
-      ```
+     ```
      
 ## Technical details
 
