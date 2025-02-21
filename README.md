@@ -5,6 +5,7 @@ A program to fix the problem of double clicks that occur due to mechanical wear 
 Works in the background and blocks unwanted repeated clicks. Takes up minimal space and uses minimal resources (like zero), no admin rights required .
 
 **Note: If it doesn't work, just adjust the threshold in the settings, because different mice require different ones.**
+**When launched, the program is automatically minimized to the system tray**
 
 ## Features
 
@@ -40,7 +41,7 @@ Works in the background and blocks unwanted repeated clicks. Takes up minimal sp
 ### First launch
 - When launched, the program is automatically minimized to the system tray
 - The program icon will appear in the tray
-- The program immediately starts working with default settings (threshold 30ms)
+- The program immediately starts working with default settings (threshold 50ms)
 
 ### Setting
 1. Open the settings in one of the following ways:
@@ -51,7 +52,8 @@ Works in the background and blocks unwanted repeated clicks. Takes up minimal sp
    - Higher value = more aggressive click filtering
    - Recommended range: 20-100ms
 3. Click "Apply" to save the settings
-
+
+
      
 ### Program management
 - **Opening settings**: double-click on the tray icon
@@ -87,4 +89,4 @@ To add to Windows startup:
 - The program uses a low-level mouse hook to intercept events
 - Settings are saved in the file `mousefix_config.xml`
 - Minimum threshold: 10ms
-- Maximum threshold: 200ms
+- Maximum threshold: 300ms
