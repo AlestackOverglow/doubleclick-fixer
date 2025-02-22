@@ -107,7 +107,7 @@ public class MouseFix
         string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         string appFolder = Path.Combine(appDataPath, "MouseFix");
         
-        // Создаем директорию, если она не существует
+       
         if (!Directory.Exists(appFolder))
         {
             Directory.CreateDirectory(appFolder);
