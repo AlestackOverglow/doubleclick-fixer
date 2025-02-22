@@ -11,8 +11,9 @@ public class MouseFix
     private const int WH_MOUSE_LL = 14;
     private const int WM_LBUTTONDOWN = 0x0201;
     private const int WM_LBUTTONUP = 0x0202;
-    private const string CONFIG_FILE = "mousefix_config.xml";
+    private const string CONFIG_FILENAME = "mousefix_config.xml";
     private const int DEFAULT_THRESHOLD = 30; // Default threshold in milliseconds
+    private const bool DEFAULT_AUTOSTART = false; // Default autostart setting
     private const int DEBOUNCE_TIME = 10; // Minimum time between clicks in milliseconds
     private const int RESET_TIMER_INTERVAL = 100; // Reset timer interval in milliseconds
     
@@ -101,24 +102,99 @@ public class MouseFix
         }
     }
 
+    private static string GetConfigFilePath()
+    {
+        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        string appFolder = Path.Combine(appDataPath, "MouseFix");
+        
+        // Создаем директорию, если она не существует
+        if (!Directory.Exists(appFolder))
+        {
+            Directory.CreateDirectory(appFolder);
+        }
+        
+        return Path.Combine(appFolder, CONFIG_FILENAME);
+    }
+
+    private static bool ShowFirstRunDialog()
+    {
+        using (var firstRunForm = new Form())
+        {
+            firstRunForm.Text = "Welcome to MouseFix";
+            firstRunForm.Size = new System.Drawing.Size(294, 150);
+            firstRunForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+            firstRunForm.MaximizeBox = false;
+            firstRunForm.MinimizeBox = false;
+            firstRunForm.StartPosition = FormStartPosition.CenterScreen;
+
+           
+            var welcomeLabel = new Label
+            {
+                Text = "Would you like MouseFix to start automatically with Windows?",
+                AutoSize = false,
+                Size = new System.Drawing.Size(260, 40),
+                Location = new System.Drawing.Point(10, 20),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            
+            const int buttonWidth = 80;
+            const int buttonSpacing = 10; 
+            const int startX = 52; 
+
+            var yesButton = new Button
+            {
+                Text = "Yes",
+                DialogResult = DialogResult.Yes,
+                Location = new System.Drawing.Point(startX, 70),
+                Size = new System.Drawing.Size(buttonWidth, 25)
+            };
+
+            var noButton = new Button
+            {
+                Text = "No",
+                DialogResult = DialogResult.No,
+                Location = new System.Drawing.Point(startX + buttonWidth + buttonSpacing, 70),
+                Size = new System.Drawing.Size(buttonWidth, 25)
+            };
+
+            firstRunForm.Controls.AddRange(new Control[] { 
+                welcomeLabel,
+                yesButton,
+                noButton
+            });
+
+            return firstRunForm.ShowDialog() == DialogResult.Yes;
+        }
+    }
+
     private static void LoadConfig()
     {
         try
         {
-            if (File.Exists(CONFIG_FILE))
+            string configPath = GetConfigFilePath();
+            if (File.Exists(configPath))
             {
                 var serializer = new XmlSerializer(typeof(Config));
-                using (var reader = new StreamReader(CONFIG_FILE))
+                using (var reader = new StreamReader(configPath))
                 {
                     var config = (Config)serializer.Deserialize(reader);
                     _threshold = config.Threshold;
                     SetAutoStart(config.AutoStart);
                 }
             }
+            else
+            {
+                _threshold = DEFAULT_THRESHOLD;
+                bool autoStart = ShowFirstRunDialog();
+                SetAutoStart(autoStart);
+                SaveConfig();
+            }
         }
         catch
         {
             _threshold = DEFAULT_THRESHOLD;
+            SetAutoStart(DEFAULT_AUTOSTART);
         }
     }
 
@@ -132,7 +208,8 @@ public class MouseFix
                 AutoStart = GetAutoStartEnabled()
             };
             var serializer = new XmlSerializer(typeof(Config));
-            using (var writer = new StreamWriter(CONFIG_FILE))
+            string configPath = GetConfigFilePath();
+            using (var writer = new StreamWriter(configPath))
             {
                 serializer.Serialize(writer, config);
             }
