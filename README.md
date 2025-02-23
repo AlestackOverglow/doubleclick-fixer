@@ -4,6 +4,8 @@ A program to fix the problem of double clicks that occur due to mechanical wear 
 
 Works in the background and blocks unwanted repeated clicks. Takes up minimal space and uses minimal resources (like zero), no admin rights required .
 
+If you find this project helpful, please consider giving it a star ⭐ It helps others discover the project and motivates further development.
+
 **Note: If it doesn't work, just adjust the threshold in the settings, because different mice require different ones.**
 **When launched, the program is automatically minimized to the system tray**
 
